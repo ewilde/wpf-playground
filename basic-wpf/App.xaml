@@ -1,0 +1,13 @@
+﻿<Application x:Class="basic.wpf.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dataBinding="clr-namespace:basic.wpf.DataBinding"
+             StartupUri="DataBinding/EmployeeListView.xaml">
+    <Application.Resources>
+         <dataBinding:EmployeeListViewModel x:Key="EmployeeListViewModel"/>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontStyle" Value="Italic"></Setter>
+            <Setter Property="FontFamily" Value="Consolas"/>
+        </Style>
+    </Application.Resources>
+</Application>

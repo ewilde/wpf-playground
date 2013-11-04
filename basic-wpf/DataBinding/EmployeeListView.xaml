@@ -1,0 +1,35 @@
+﻿<Window x:Class="basic.wpf.databinding.view"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:basic.wpf.DataBinding"
+        mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        Title="Data binding - employee list view"
+        DataContext="{StaticResource EmployeeListViewModel}"
+        d:DesignWidth="800"
+        d:DesignHeight="300"
+        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=viewModels:EmployeeViewModelDesignTime}"
+        Loaded="View_OnLoaded">
+    <Window.Resources>
+        <DataTemplate x:Key="EmployeeListMode">
+            <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="300" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                <TextBlock>
+                    <TextBlock.Text>
+                            <MultiBinding StringFormat="Name: {0,-20}{1,-20}">
+                                <Binding Path="FirstName"/>
+                                <Binding Path="LastName"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <TextBlock>Hello world</TextBlock>
+        <ScrollViewer Margin="40">
+            <ItemsControl ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.IsVirtualizing="True" ItemsSource="{Binding Employees}" ItemTemplate="{StaticResource EmployeeListMode}"/>
+        </ScrollViewer>
+    </Grid>
+</Window>
