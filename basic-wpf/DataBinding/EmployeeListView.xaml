@@ -14,22 +14,64 @@
     <Window.Resources>
         <DataTemplate x:Key="EmployeeListMode">
             <Grid>
-                <Grid.ColumnDefinitions><ColumnDefinition Width="300" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
                 <TextBlock>
                     <TextBlock.Text>
-                            <MultiBinding StringFormat="Name: {0,-20}{1,-20}">
-                                <Binding Path="FirstName"/>
-                                <Binding Path="LastName"/>
-                            </MultiBinding>
-                        </TextBlock.Text>
+                        <MultiBinding StringFormat="Name: {0,-20}{1,-20}">
+                            <Binding Path="FirstName"/>
+                            <Binding Path="LastName"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
                 </TextBlock>
             </Grid>
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <TextBlock>Hello world</TextBlock>
-        <ScrollViewer Margin="40">
-            <ItemsControl ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.IsVirtualizing="True" ItemsSource="{Binding Employees}" ItemTemplate="{StaticResource EmployeeListMode}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock>Item count:</TextBlock>
+        <TextBlock Margin="80 0 0 0" Text="{Binding ItemCount}" Grid.ColumnSpan="2"/>
+        <TextBlock Grid.Row="1" Grid.Column="0">Virtualized item control</TextBlock>
+        <TextBlock Grid.Row="1" Grid.Column="1">Un-virtualized item control</TextBlock>
+        <ItemsControl Grid.Row="2" Grid.Column="0" Margin="40"  ScrollViewer.CanContentScroll="True" VirtualizingStackPanel.IsVirtualizing="True" ItemsSource="{Binding Employees}" ItemTemplate="{StaticResource EmployeeListMode}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <Border
+            BorderThickness="{TemplateBinding Border.BorderThickness}"
+            Padding="{TemplateBinding Control.Padding}"
+            BorderBrush="{TemplateBinding Border.BorderBrush}"
+            Background="{TemplateBinding Panel.Background}"
+            SnapsToDevicePixels="True">
+                        <ScrollViewer
+                    Padding="{TemplateBinding Control.Padding}"
+                    Focusable="False">
+                            <ItemsPresenter
+                        SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </ItemsControl.Template>
+        </ItemsControl>
+        <ScrollViewer Grid.Row="2" Grid.Column="1" Margin="40" >
+            <ItemsControl ScrollViewer.CanContentScroll="True"
+                          VirtualizingStackPanel.IsVirtualizing="True" ItemsSource="{Binding Employees}"
+                          ItemTemplate="{StaticResource EmployeeListMode}" />
         </ScrollViewer>
+       
     </Grid>
 </Window>

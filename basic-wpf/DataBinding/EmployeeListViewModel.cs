@@ -4,12 +4,16 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Windows.Documents;
 
+    using StructureMap;
+
     using basic.wpf.Data;
     using basic.wpf.Model;
+    using basic.wpf.Statistics;
 
     using basic_wpf.Annotations;
     using basic_wpf.Data;
@@ -17,22 +21,28 @@
     public class EmployeeListViewModel : INotifyPropertyChanged
     {
         private readonly IRepository<Employee> repository;
+
+        private readonly IOperationTimer operationTimer;
+
         private ObservableCollection<Employee> employees;
 
+        private IOperationResult timer;
+
         public EmployeeListViewModel()
-            : this(new CsvRepository<Employee>(@"Data\uk-500.csv"), true)
+            : this(new CsvRepository<Employee>(@"Data\uk-500.csv"), true, ObjectFactory.GetInstance<IOperationTimer>())
         {
         }
 
-        public EmployeeListViewModel(IRepository<Employee> repository, bool largeMode)
+        public EmployeeListViewModel(IRepository<Employee> repository, bool largeMode, IOperationTimer operationTimer)
         {
-            Statistics.Monitor.Split("employee view model begin");
+            timer = operationTimer.Begin("Employee view model");
 
             this.repository = repository;
+            this.operationTimer = operationTimer;
 
             if (largeMode)
             {
-                const int maxSize = 1000;
+                const int maxSize = 10000;
                 var largeList = new List<Employee>(maxSize);
                 var collection = this.repository.GetAll().ToArray();
                     
@@ -48,7 +58,8 @@
                 this.employees = new ObservableCollection<Employee>(this.repository.GetAll());
             }
 
-            Statistics.Monitor.Split("employee view model begin");
+            timer.End(timer);
+            Debug.WriteLine(timer);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -68,6 +79,15 @@
 
                 this.employees = value;
                 this.OnPropertyChanged();
+                this.OnPropertyChanged("ItemCount");
+            }
+        }
+
+        public int ItemCount
+        {
+            get
+            {
+                return this.Employees.Count;
             }
         }
 

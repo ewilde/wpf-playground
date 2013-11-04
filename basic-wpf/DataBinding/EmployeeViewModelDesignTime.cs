@@ -14,10 +14,12 @@ namespace basic.wpf.DataBinding
 
     using EnvDTE;
 
+    using basic.wpf.Statistics;
+
     public class EmployeeViewModelDesignTime : EmployeeListViewModel
     {
         public EmployeeViewModelDesignTime() : 
-            base(new CsvRepository<Employee>(Path.Combine(ProjectPath.Path, @"..\Data\uk-500.csv")), false)
+            base(new CsvRepository<Employee>(Path.Combine(ProjectPath.Path, @"..\Data\uk-500.csv")), false, new OperationTimer())
         {
         
         }

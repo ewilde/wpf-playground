@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace basic.wpf.databinding
+namespace basic.wpf.Controls
 {
     using System.Diagnostics;
 
@@ -21,15 +21,15 @@ namespace basic.wpf.databinding
     using basic.wpf.Statistics;
 
     /// <summary>
-    /// Interaction logic for view.xaml
+    /// Interaction logic for ListBoxView.xaml
     /// </summary>
-    public partial class view : Window
+    public partial class ListBoxView : Window
     {
         private IOperationTimer timer;
 
         private IOperationResult timerResult;
 
-        public view()
+        public ListBoxView()
         {
             timer = ObjectFactory.GetInstance<IOperationTimer>();
             timerResult = timer.Begin("Employee view");
@@ -40,6 +40,16 @@ namespace basic.wpf.databinding
         {
             timer.End(timerResult);
             Debug.WriteLine(timerResult);
+        }
+
+        private void OpenCmdExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            MessageBox.Show("Open");
+        }
+
+        private void OpenCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
         }
     }
 }

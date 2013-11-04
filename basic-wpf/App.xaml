@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:dataBinding="clr-namespace:basic.wpf.DataBinding"
-             StartupUri="DataBinding/EmployeeListView.xaml">
+             Exit="App_OnExit"
+             StartupUri="Controls/ListBoxView.xaml"
+             >
     <Application.Resources>
          <dataBinding:EmployeeListViewModel x:Key="EmployeeListViewModel"/>
         <Style TargetType="TextBlock">

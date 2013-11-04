@@ -1,0 +1,44 @@
+﻿<Window x:Class="basic.wpf.Controls.ListBoxView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:viewModels="clr-namespace:basic.wpf.DataBinding"
+        DataContext="{StaticResource EmployeeListViewModel}"
+        d:DesignWidth="800"
+        d:DesignHeight="300"
+        Loaded="View_OnLoaded"
+        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type=viewModels:EmployeeViewModelDesignTime}"
+        Title="ListBoxView">
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Open"
+                  Executed="OpenCmdExecuted"
+                  CanExecute="OpenCmdCanExecute"/>
+    </Window.CommandBindings>
+    <Grid>
+        <ListBox ItemsSource="{Binding Employees}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Command="Open" Content="{Binding FirstName}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                                    <StackPanel>
+                                        <ContentPresenter Content="{TemplateBinding Content}" />
+                                        <Ellipse Margin="10"
+                                                 Fill="Yellow"
+                                                 Height="100"
+                                                 Width="200"
+                                                 StrokeThickness="2"
+                                                 Stroke="Black" />
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
